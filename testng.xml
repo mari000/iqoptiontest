@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Test Suite">
+    <!-- Headers -->
+    <parameter name="register_service_url" value="https://iqoption.com/api/register" />
+    <parameter name="login_service_url" value="https://auth.iqoption.com/api/v1.0/login" />
+    <parameter name="user_profile_url" value="https://iqoption.com/api/getprofile" />
+    <parameter name="ws_service_url" value="wss://iqoption.com/echo/websocket" />
+    <parameter name="cookie_lang" value="en_US" />
+    <!-- Registered user -->
+    <parameter name="existing_user_email" value="dogituvoh@hostguru.info" />
+    <parameter name="existing_user_password" value="cazoman99aQ" />
+    <!-- Valid Params -->
+    <parameter name="valid_email" value="validtestemail@gmail.com" />
+    <parameter name="valid_password" value="cd4SDds6" />
+    <parameter name="valid_first_name" value="Pavel" />
+    <parameter name="valid_last_name" value="Sinitcyn" />
+    <parameter name="valid_tz" value="Europe/Moscow" />
+    <!-- NotValid Params -->
+    <parameter name="pwd_less_than_6_char" value="sd4Fh" />
+    <parameter name="not_valid_email" value="notValidEmail" />
+    <parameter name="not_existing_user_email" value="validtestemail@gmail.com" />
+    <parameter name="wrong_password" value="123qwer" />
+
+    <test name="Register API Test">
+        <!-- Error Codes -->
+        <parameter name="user_already_registered_code" value="4" />
+        <parameter name="not_valid_email_code" value="19" />
+        <parameter name="invalid_pwd_length_code" value="29" />
+        <parameter name="fist_name_required_code" value="12" />
+        <classes>
+            <class name="iqoptiontest.test.RegisterApiTest">
+                <methods>
+                    <include name="RegisterUser_EmailAlreadyExisting_ReturnsError" />
+                    <include name="RegisterUser_EmailIsNotValid_ReturnsError" />
+                    <include name="RegisterUser_PasswordLessThan6Char_ReturnsError" />
+                    <include name="RegisterUser_UserNameNotSend_ReturnsError" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Auth API Test">
+        <!-- Error Codes -->
+        <parameter name="invalid_credentials_code" value="202" />
+        <parameter name="not_valid_email_code" value="1" />
+        <classes>
+            <class name="iqoptiontest.test.AuthApiTest">
+                <methods>
+                    <include name="Auth_UserAlreadyExisting_ReturnsSsidAndUserProfile" />
+                    <include name="Auth_UserAlreadyExistingWrongPassword_ReturnsError" />
+                    <include name="Auth_EmailIsNotValid_ReturnsError" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="WS API Test">
+        <!-- Settings -->
+        <parameter name="ws_response_ms_timeout" value="5000" />
+        <parameter name="ws_connection_ms_timeout" value="5000" />
+        <!-- Params -->
+        <parameter name="request_id" value="123456_123456" />
+        <parameter name="ws_not_existing_ssid" value="wsnotexistingssid" />
+        <classes>
+            <class name="iqoptiontest.test.WsApiTest">
+                <methods>
+                    <include name="WsAuth_ExistingSession_AuthSuccessfulReturnsProfile" />
+                    <include name="WsAuth_NotExistingSession_AuthFailReturnsFalse" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
